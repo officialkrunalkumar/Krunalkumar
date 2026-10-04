@@ -3124,6 +3124,126 @@ main [id] {
   margin-top: 0.25rem;
 }
 
+.automation-assessment {
+  display: grid;
+  gap: 1rem;
+}
+
+.automation-assessment-note {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  background: rgb(var(--accent-rgb) / 0.06);
+  color: var(--ink-2);
+}
+
+.automation-assessment-progress {
+  height: 0.4rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(var(--line-rgb) / 0.2);
+}
+
+.automation-assessment-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transform: scaleX(0.25);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.automation-assessment-count {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.automation-assessment-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.automation-assessment-step {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.automation-assessment-step legend {
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+.automation-assessment-step legend:focus,
+.automation-assessment-result h3:focus {
+  outline: none;
+}
+
+.automation-assessment-step legend:focus-visible,
+.automation-assessment-result h3:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.automation-assessment-step .field {
+  max-width: 42rem;
+}
+
+.automation-assessment-step input[type="number"],
+.automation-assessment-step select {
+  min-height: 3.25rem;
+}
+
+.automation-assessment-step textarea {
+  min-height: 7rem;
+}
+
+.automation-assessment-result h3 {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+  font-size: 1.45rem;
+}
+
+.automation-assessment-estimate,
+.automation-assessment-guidance {
+  margin: 0.75rem 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
+  border-radius: 14px;
+  background: rgb(var(--accent-rgb) / 0.08);
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+.automation-assessment-guidance {
+  border-color: rgb(var(--line-rgb) / 0.2);
+  background: rgb(var(--line-rgb) / 0.06);
+}
+
+.automation-assessment-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.automation-assessment-progress[hidden],
+.automation-assessment-count[hidden],
+.automation-assessment-form[hidden],
+.automation-assessment-controls[hidden] {
+  display: none;
+}
+
 .program-fit-progress[hidden],
 .program-fit-step-count[hidden],
 .program-fit-form[hidden],

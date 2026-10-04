@@ -24,6 +24,13 @@
 - The brief is passed to Contact in a temporary URL fragment. The contact page reads it into the message field and removes the fragment from the address bar. Sending it is a separate, explicit action by the visitor through the contact form.
 - The planner does not estimate prices, request passwords, or ask for confidential client data.
 
+### Automation Opportunity Assessment
+- Location: https://krunalkumar.dpdns.org/services#automation-assessment
+- A guided, client-side estimate of the team time currently spent on a recurring task, based on frequency, minutes per occurrence, and number of people doing it.
+- It asks whether the workflow is predictable or exception-heavy, then suggests whether to examine automation further, map exceptions, or clarify the process first.
+- The estimate is current effort, not recoverable hours or a savings forecast. Daily activity is annualized at 250 working days, weekly at 52 weeks, and monthly at 12 months; setup, review, exceptions, and maintenance are excluded.
+- Answers are not stored or sent by the assessment. Continuing passes a short summary in a temporary URL fragment to the Project Planner, which removes it after reading and lets visitors review/edit the brief. Contact is a separate, explicit next step.
+
 ### Internship Track Finder
 - URL: https://krunalkumar.dpdns.org/internships#program-fit
 - A guided, client-side questionnaire compares the free selective internship with open, month-to-month 1:1 mentorship using a visitor's goals, preferred format, area of interest, experience, scholarship interest, availability, and optional context.

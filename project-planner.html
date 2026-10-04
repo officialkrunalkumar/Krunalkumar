@@ -96,6 +96,7 @@
         <div class="planner-progress" aria-hidden="true">
           <span class="planner-progress-fill"></span>
         </div>
+        <p class="planner-question-hint planner-handoff-status" id="planner-handoff-status" role="status" aria-live="polite" hidden></p>
         <p class="planner-step-count" id="planner-step-count" aria-live="polite">Question 1 of 4</p>
 
         <form id="project-planner" class="project-planner">
@@ -138,9 +139,9 @@
             <p class="planner-question-hint">A sentence or two is plenty. You can add detail later.</p>
             <label class="field" for="planner-outcome">
               <span>Your goal</span>
-              <textarea id="planner-outcome" name="outcome" rows="5" maxlength="500" placeholder="What are you trying to do, or what is getting in the way?" required></textarea>
+              <textarea id="planner-outcome" name="outcome" rows="5" maxlength="1000" placeholder="What are you trying to do, or what is getting in the way?" required></textarea>
             </label>
-            <p class="form-hint"><span id="planner-character-count">0</span> / 500 characters</p>
+            <p class="form-hint"><span id="planner-character-count">0</span> / 1,000 characters</p>
           </fieldset>
 
           <fieldset class="planner-step" data-step="3" hidden>
