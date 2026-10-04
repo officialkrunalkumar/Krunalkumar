@@ -172,15 +172,15 @@
         </div>
         <div class="colo-stats">
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="pages">289</span>
+            <span class="colo-num" data-colophon="pages">299</span>
             <span class="colo-label">HTML pages</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="labs">111</span>
+            <span class="colo-num" data-colophon="labs">117</span>
             <span class="colo-label">browser labs</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="games">89</span>
+            <span class="colo-num" data-colophon="games">91</span>
             <span class="colo-label">games</span>
           </div>
           <div class="colo-stat">
@@ -192,16 +192,16 @@
             <span class="colo-label">dependencies</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="js">242</span>
+            <span class="colo-num" data-colophon="js">258</span>
             <span class="colo-label">scripts, all mine</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="commits">203</span>
+            <span class="colo-num" data-colophon="commits">225</span>
             <span class="colo-label">commits</span>
           </div>
         </div>
         <p class="colo-updated">
-          Counted on <span data-colophon="updated">2026-09-07</span>.
+          Counted on <span data-colophon="updated">2026-10-04</span>.
         </p>
       </section>
 
@@ -214,7 +214,7 @@
           There is no framework here, no bundler and no build step in the usual sense. Every page is an
           <code>.html</code> file you could open in a text editor, and the file you see in the repository is
           the file the browser is served. <code>package.json</code> exists to name
-          <span data-colophon="npmscripts">8</span> scripts and a Node version floor; it has
+          <span data-colophon="npmscripts">10</span> scripts and a Node version floor; it has
           <strong><span data-colophon="deps">0</span> dependencies</strong>, so there is no lockfile and no
           <code>node_modules</code> to commit. What the deploy generates — the sitemap dates, the search
           index, the figures on this page — <em>is</em> committed, on purpose: it means the repository copy
@@ -268,11 +268,11 @@
         </p>
         <div class="colo-stats colo-stats--wide">
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="cssbefore">896 KB</span>
+            <span class="colo-num" data-colophon="cssbefore">927 KB</span>
             <span class="colo-label">CSS in the repository</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="cssafter">498 KB</span>
+            <span class="colo-num" data-colophon="cssafter">518 KB</span>
             <span class="colo-label">CSS on the wire</span>
           </div>
           <div class="colo-stat">
@@ -301,7 +301,7 @@
         </p>
         <p>
           <strong>Sitemap parity</strong> — every one of the
-          <strong><span data-colophon="pages">291</span> pages</strong> on disk must have an entry, and every
+          <strong><span data-colophon="pages">299</span> pages</strong> on disk must have an entry, and every
           entry must have a page. A new page that nobody links to is invisible; a stale entry sends crawlers to
           a 404. <strong>Share image</strong> — every <code>og:image</code> a page declares must exist as a
           file, or the link posts into a chat window with a blank rectangle where the card should be.
@@ -313,7 +313,7 @@
           <strong>Service worker precache</strong> — every file the offline shell names must resolve, because a
           precache listing something that moved fails the install and takes offline support down with it.
           <strong>Structured data</strong> — every JSON-LD block on the site must parse. <strong>Games
-          freshness</strong> — all <strong><span data-colophon="games">90</span></strong> generated game pages
+          freshness</strong> — all <strong><span data-colophon="games">91</span></strong> generated game pages
           must match, byte for byte, what the generator would write today. <strong>Games manifest</strong> —
           the runtime values inside each game module must agree with the manifest that describes it, so a page
           cannot advertise a control the code does not have.
@@ -370,8 +370,8 @@
           <h2>The reasoning lives in the repository</h2>
         </div>
         <p>
-          The README runs to <strong><span data-colophon="readme">2,118</span> lines</strong>, and the
-          stylesheets carry roughly <strong><span data-colophon="csscomments">5,988</span> lines</strong> of
+          The README runs to <strong><span data-colophon="readme">2,173</span> lines</strong>, and the
+          stylesheets carry roughly <strong><span data-colophon="csscomments">6,183</span> lines</strong> of
           comments. They do not describe what the code does — you can read that. They carry the measurement,
           the rejected alternative, and what breaks if you change it back.
         </p>

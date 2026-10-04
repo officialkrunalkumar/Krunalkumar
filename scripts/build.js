@@ -141,6 +141,7 @@ const ROOT = path.resolve(__dirname, '..');
    -------------------------------------------------------------------------- */
 const ASKED_CHECK = process.argv.includes('--check');
 const FORCED = process.argv.includes('--write');
+const COLOPHON_ONLY = process.argv.includes('--colophon-only');
 const ON_BUILDER = !!(process.env.VERCEL || process.env.CI);
 const CHECK = ASKED_CHECK || !(FORCED || ON_BUILDER);
 const DEMOTED = CHECK && !ASKED_CHECK;
@@ -361,7 +362,8 @@ function balance(src) {
   return depth;
 }
 
-function doCss() {
+function doCss(checkOnly) {
+  const checking = CHECK || !!checkOnly;
   cssCoverage();
   log('CSS comment stripping');
   for (const rel of CSS_FILES) {
@@ -407,10 +409,10 @@ function doCss() {
     totalAfter += out.length;
     const saved = src.length - out.length;
     const pct = src.length ? ((saved / src.length) * 100).toFixed(1) : '0.0';
-    log('  ' + (CHECK ? 'would strip' : 'stripped  ') + '  ' + rel.padEnd(26) +
+    log('  ' + (checking ? 'would strip' : 'stripped  ') + '  ' + rel.padEnd(26) +
         (src.length + '').padStart(7) + ' -> ' + (out.length + '').padStart(7) +
         '  (-' + pct + '%)');
-    if (!CHECK) fs.writeFileSync(abs, out);
+    if (!checking) fs.writeFileSync(abs, out);
   }
 }
 
@@ -1857,6 +1859,19 @@ function writeCounts(pages) {
       metaHits + ' head phrase(s) across ' + filesChanged + ' file(s)');
 }
 
+function countHtmlPages() {
+  let pages = 0;
+  (function count(dir) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === '.git' || e.name === 'node_modules' || e.name === 'scripts') continue;
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) count(p);
+      else if (e.name.endsWith('.html')) pages += 1;
+    }
+  })(ROOT);
+  return pages;
+}
+
 function verifyOutput() {
   log('');
   log('output check');
@@ -1875,15 +1890,7 @@ function verifyOutput() {
 
   // The page count is the other thing worth pinning. A build that somehow
   // emptied a directory would still pass the per-file checks above.
-  let pages = 0;
-  (function count(dir) {
-    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (e.name === '.git' || e.name === 'node_modules' || e.name === 'scripts') continue;
-      const p = path.join(dir, e.name);
-      if (e.isDirectory()) count(p);
-      else if (e.name.endsWith('.html')) pages += 1;
-    }
-  })(ROOT);
+  const pages = countHtmlPages();
 
   const MIN_PAGES = 80;
   if (pages < MIN_PAGES) problems.push('only ' + pages + ' HTML pages found, expected at least ' + MIN_PAGES);
@@ -2214,6 +2221,15 @@ function doShareImages() {
 }
 
 function main() {
+  if (COLOPHON_ONLY) {
+    if (CHECK) {
+      throw new Error('--colophon-only requires --write; refusing to run in check mode');
+    }
+    doCss(true);
+    writeColophon(countHtmlPages());
+    return;
+  }
+
   if (DEMOTED) {
     log('=== build: DEMOTED TO --check ===');
     log('  This is not the build container (no --write, no VERCEL/CI), so nothing');
