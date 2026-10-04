@@ -1416,11 +1416,53 @@ main [id] {
   margin-bottom: 1.2rem;
 }
 
+.section-intro {
+  max-width: 68ch;
+  margin: 0.65rem 0 0;
+  color: var(--ink-2);
+}
+
 .card-grid,
 .license-grid,
 .content-grid {
   display: grid;
   gap: 1rem;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.process-card {
+  min-width: 0;
+}
+
+.process-number {
+  display: inline-block;
+  margin-bottom: 0.55rem;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.process-card h3 {
+  margin: 0 0 0.45rem;
+}
+
+.process-card p {
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.process-cta {
+  margin: 1.25rem 0 0;
+  text-align: center;
 }
 
 .card-grid {
@@ -4304,6 +4346,10 @@ footer a:hover {
     grid-template-columns: 1fr;
   }
 
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   /* minmax(0, 1fr) rather than 1fr: a bare 1fr track has an automatic minimum
      of min-content, so one unbreakable child — a long code line, a URL — makes
      the whole track wider than the screen and the page scrolls sideways.
@@ -4350,6 +4396,10 @@ footer a:hover {
 }
 
 @media (max-width: 640px) {
+  .process-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .nav-toggle {
     display: inline-flex;
   }
