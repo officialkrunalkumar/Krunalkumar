@@ -1502,6 +1502,57 @@ main [id] {
   color: var(--ink);
 }
 
+.incident-guide {
+  scroll-margin-top: 6rem;
+}
+
+.incident-safety-note {
+  margin: 0 0 1rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgb(251 191 36 / 0.35);
+  border-left: 4px solid #fbbf24;
+  border-radius: 12px;
+  background: rgb(251 191 36 / 0.07);
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+
+.incident-guide-list .incident-guide-content {
+  padding-bottom: 1rem;
+  color: var(--ink-2);
+}
+
+.incident-guide-content ol {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0 0 0.8rem;
+  padding-left: 1.35rem;
+}
+
+.incident-guide-content li {
+  padding-left: 0.2rem;
+}
+
+.incident-guide-content p {
+  margin: 0.75rem 0 0;
+  color: var(--ink-3);
+}
+
+.incident-guide-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.incident-guide-cta p {
+  flex: 1 1 32rem;
+  margin: 0;
+  color: var(--ink-2);
+}
+
 @media (max-width: 600px) {
   .service-jump-nav {
     display: grid;
@@ -2967,6 +3018,118 @@ main [id] {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 0.5rem;
+}
+
+.program-fit {
+  display: grid;
+  gap: 1rem;
+}
+
+.program-fit-note {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  background: rgb(var(--accent-rgb) / 0.06);
+  color: var(--ink-2);
+}
+
+.program-fit-progress {
+  height: 0.4rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(var(--line-rgb) / 0.2);
+}
+
+.program-fit-progress-fill {
+  display: block;
+  width: 20%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 180ms ease;
+}
+
+.program-fit-step-count {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.program-fit-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.program-fit-step {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.program-fit-step legend {
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+.program-fit-step legend:focus,
+.program-fit-review h3:focus {
+  outline: none;
+}
+
+.program-fit-step legend:focus-visible,
+.program-fit-review h3:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.program-fit-step .field {
+  max-width: 42rem;
+}
+
+.program-fit-step select {
+  min-height: 3.25rem;
+}
+
+.program-fit-details textarea {
+  min-height: 7rem;
+}
+
+.program-fit-review h3 {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+  font-size: 1.45rem;
+}
+
+.program-fit-recommendation {
+  margin: 0.75rem 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
+  border-radius: 14px;
+  background: rgb(var(--accent-rgb) / 0.08);
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+.program-fit-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.program-fit-progress[hidden],
+.program-fit-step-count[hidden],
+.program-fit-form[hidden],
+.program-fit-controls[hidden],
+#program-fit-handoff-error[hidden] {
+  display: none;
 }
 
 @media (max-width: 600px) {

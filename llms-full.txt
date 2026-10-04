@@ -24,6 +24,13 @@
 - The brief is passed to Contact in a temporary URL fragment. The contact page reads it into the message field and removes the fragment from the address bar. Sending it is a separate, explicit action by the visitor through the contact form.
 - The planner does not estimate prices, request passwords, or ask for confidential client data.
 
+### Internship Track Finder
+- URL: https://krunalkumar.dpdns.org/internships#program-fit
+- A guided, client-side questionnaire compares the free selective internship with open, month-to-month 1:1 mentorship using a visitor's goals, preferred format, area of interest, experience, scholarship interest, availability, and optional context.
+- Visitors review the suggested route and answers before continuing. The guide does not decide internship admission or scholarship eligibility, and it does not collect financial documents or figures.
+- Continuing prefills the track, area, and answer summary directly into the application form on the same page. Answers stay in the browser and are not sent or stored by the guide; applying remains a separate visitor action through the application form.
+- Mentorship scholarships are limited, up to 50% off, and considered on need and merit in the interview. A scholarship request is only relevant to mentorship, not the free internship.
+
 ---
 
 ## 2. Academic Background & Career Timeline
@@ -61,6 +68,9 @@
 5. **Guidance, Coaching & Mentorship:** 1:1 career roadmaps, mock technical interviews, resume/portfolio audits, and software engineering mentorship.
 6. **Research & Technical Writing:** Academic-grade documentation, visual workflow library authoring (Lucidchart), and technical articles.
 7. **Corporate & Team Training:** Instructor-led sessions for one company team at a time — security awareness, Linux/systems security, automation and AI workflows, engineering practice, technical writing, and professional skills. Remote or on site, half a day to three days, 10–40 attendees, quoted per session or per program. NOTE: this is a newly opened service line; no corporate engagement has been delivered under his own name yet, and this is stated openly on the services page.
+
+### Cyber-incident first steps
+The Services page has a general, informational guide for suspected account compromise, suspicious links, possible malware, spyware/stalkerware concerns, and work-device incidents. It offers cautious first steps, directs account recovery to official services, advises work-device users to contact their organization’s IT/security team, and prioritizes personal safety where monitoring is suspected. It is not a diagnosis, emergency response service, or substitute for an organization’s incident process. Visitors are told not to share passwords, one-time/recovery codes, confidential company data, or private files.
 
 ---
 
@@ -218,6 +228,7 @@ Complete index at https://krunalkumar.dpdns.org/blog
 ### Educational Programs
 - **Free Internship (Selective):** 2–3 seats per cohort, ~3 months long, zero fees. Interns ship real production work and receive verified project completion certificates.
 - **Paid Mentorship (Open):** ₹4,999/month (India) or $120/month (International via Wise), cancel anytime. Features weekly 1:1 sessions, custom roadmaps, code reviews, and scholarships up to 50%.
+- **Choosing a Track:** The Internship Track Finder at `/internships#program-fit` offers a client-side, non-binding suggestion based on goals and preferred learning format. Visitors review answers before they can prefill an application. It does not determine admission, scholarship eligibility, or awards; scholarship consideration is discussed on need and merit in the interview.
 - **Separation Rule:** Mentorship participation never converts into an internship title; each certificate honestly reflects the exact program completed. Corporate training is a separate paid B2B service, distinct from both the free internship and the paid 1:1 mentorship.
 
 ### Certificate Verification System
