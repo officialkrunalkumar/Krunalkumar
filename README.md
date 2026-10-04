@@ -15,7 +15,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 
 | Page                  | Purpose                                                                    |
 | --------------------- | -------------------------------------------------------------------------- |
-| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications. 🥚 Six quick taps on the hero portrait light the masthead up — the keylines either side of the name start glowing and streaming, and the cursor in the `ks_` mark blinks through four colours. That is all of it: **the name itself never moves** (an earlier version wiggled the whole lockup, and a tilting header reads as broken) and nothing is thrown over the header (it used to burst sparks on a 260ms interval). **The egg is now pure CSS** — a class toggle with no timer, so there is nothing to tick and no way for it to leak work into a backgrounded tab, which the sparks needed an explicit `document.hidden` guard to avoid (wired in `particle-bg.js`; nothing stored, reload resets, inert under reduced motion — the JS simply does not bind the handler, which is the only guard and why the CSS carries none) |
+| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications. 🥚 Six quick taps on the hero portrait start animated side keylines, a blinking `ks_` cursor, a soft glow around the monogram and portrait frame, and a “DO KISSS...” message cycling its final word through Smart, Sweet, Stupid, Sharp, Sincere, Surprising, and Sunny with directional motion. Each further set speeds up the effect; one more set at top speed restores the resting look. Reduced-motion users do not get the gesture handler. |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 50 repositories     |
@@ -247,20 +247,15 @@ The value is now `camera=(self), microphone=(self)`. Had this event existed, GA 
 
 ### Visual layer
 
-**The masthead** is a monogram, a still wordmark and two keylines, and all three are pseudo-elements
-rather than markup for a specific reason: every page carries a static copy of the header for the
-no-JS case, the static chrome gate in `build.js` compares those copies against `partials/`, and
-`include-partials.js` swaps one for the other at runtime — so markup only the partial carried would
-flash and shift the bar on all 288 pages. Three slots, and the whole budget is spent:
-`.brand::before` / `::after` are the keylines, `.brand-label::before` is the `ks_` mark. Anything
-the masthead needs next has to reuse one of these or go into the partial *and* every static copy
-together.
+**The masthead** is a CSS-drawn `ks_` monogram beside a still wordmark, with quiet side keylines.
+The mark uses a pseudo-element rather than header-only markup because every page carries a static
+header for the no-JS case, the build check compares it with `partials/`, and `include-partials.js`
+swaps the partial at runtime.
 
 **The mark is drawn in CSS, not loaded from `favicon.svg`**, even though that is the same mark. An
 SVG used as a `background-image` renders in an isolated context with no access to the page's fonts,
 so the `<text>` in that file does not paint at all — loading it gives an empty rounded box. `content:
-"ks"` is real page text and just works; the green cursor is a second background layer rather than a
-third pseudo-element, because there is no third pseudo-element to spend.
+"ks"` is real page text and just works; the blinking underscore is a second background layer.
 
 **What was here before, so nobody rebuilds it.** The name used to be a rainbow gradient whose hue
 `particle-bg.js` randomised on *every page load*, with a `hue-rotate` turning a full circle every
@@ -271,11 +266,10 @@ true — but it was the wrong conclusion. The wordmark was the thing that should
 animated rainbow: the site shipped a brand colour that was lime on one visit and olive on the next
 and only rarely the sky blue (`--accent-1` / `--accent-2`) the palette is actually built from, while
 the button block in `main.css` was already stating the rule in capitals ("ONE FAMILY, NOT A
-RAINBOW"). With the name still, the flanks have nothing left to compete with and a hairline is
-enough. **Do not add the glow back to "balance" the keylines.** Nothing in the masthead animates now,
-which is also why it no longer carries a `prefers-reduced-motion` block of its own.
+RAINBOW"). That earlier rainbow-wordmark version is retired; the wordmark remains still. The side
+keylines return in a restrained resting state and animate only during the portrait easter egg.
 
-**The glow lives in the easter egg now, not in the resting state.** Six taps on the hero portrait
+**Retired keyline implementation notes (historical).** The earlier six-tap behavior
 adds `.brand-dancing`, and that is where the keylines go to 2px, pick up a colour band that streams
 outward from the name, and start pulsing a bloom. Spending the glow on the egg is the point: at rest
 the masthead is quiet, so the light reads as a reward rather than as the page's default volume. Two
@@ -289,13 +283,19 @@ override loses on every frame. `var()` inside `@keyframes` resolves against the 
 runs on, which makes redefining the tokens on the pseudo-element the only handle a theme has. Skip
 that and the egg carries dark-mode pastels onto a white bar and visibly does nothing.
 
-**The `ks_` cursor blinks through colours via one custom property.** `--ks-cursor` is registered with
+**Retired cursor-animation implementation notes (historical).** `--ks-cursor` was registered with
 `@property` as a `<color>` so it animates as a colour rather than an unknown token, and the keyframes
 touch nothing else — which is what lets one keyframe set serve both themes, since the tile fill and
 the blink palette are separate tokens the light block re-points. `steps(1, end)` is load-bearing:
 without it a registered colour interpolates and the cursor cross-fades through mud instead of
 switching. Without `@property` at all it still blinks — unregistered custom properties animate
-discretely — so this is an upgrade, not a dependency.
+discretely — so this was an upgrade, not a dependency.
+
+**Current portrait easter egg:** six quick taps animate the side keylines, blink the underscore in
+the `ks_` mark, and start a soft glow around the monogram and portrait frame. Each further set of
+six taps speeds the effects up through four levels; one more set at top speed restores the resting
+state. Mayuri joins unless she is sad. The colors are theme-aware, the wordmark stays still, and the
+gesture is not bound when reduced motion is preferred.
 
 **Mobile drops the uppercasing, and that is what pays for the mark.** The tile costs about 30px of a
 bar that had none to spare; mixed case is roughly 8% narrower for the same string at the same size,
@@ -2166,4 +2166,3 @@ Conventions worth keeping:
 - **No HTML link is needed.** Like `robots.txt`, these are found by root-path convention, and both
   are listed in `sitemap.xml`. There is no registered `<link rel>` for llms.txt, so nothing in
   `partials/footer.html` or the page `<head>` needs to point at them.
-

@@ -2022,55 +2022,68 @@
     // block in main.css for what replaced the gradient.
     const brand = document.querySelector('.brand');
 
-    // 🥚 Six quick taps on the homepage portrait light the masthead up: the
-    // keylines either side of the name start glowing and streaming, and the
-    // cursor in the ks_ mark blinks through colours. That is the whole egg.
-    // The NAME ITSELF DOES NOT MOVE — an earlier version wiggled the lockup
-    // and a tilting header just looks broken. Six more taps calm it down.
-    // Deliberately stores nothing (unlike the background controls): a reload
-    // always resets it, like a wink should.
-    //
-    // IT IS ALL CSS NOW. This used to run a 260ms interval that threw
-    // firecracker sparks over the header and jumped a --brand-hue at random;
-    // both are gone, and with them the last timer. What is left is a class
-    // toggle, so there is nothing to tick, nothing to clean up, and no way for
-    // the egg to leak work into a backgrounded tab — the sparks needed a
-    // document.hidden guard precisely because a hidden tab fires timers but
-    // never completes animations, so their animationend cleanup never ran and
-    // they piled up unbounded. Turning it off costs nothing but removing a
-    // class. (.fx-spark and its keyframes stay in main.css: verify.js has its
-    // own copy of that burst for the certificate celebration.)
-    //
-    // Skipped entirely under prefers-reduced-motion — this is the only guard
-    // for it, so the CSS carries none of its own: not binding the handler
-    // means .brand-dancing is never set and none of those rules can apply.
+    // Six quick taps start the effect, later sets speed it up, and one more
+    // set at the cap restores the resting state. Reloading resets it.
     const heroPortrait = document.querySelector('.hero-card img[src*="Krunal"]');
+    const eggMessage = document.querySelector('#egg-message');
+    const eggMessageWord = eggMessage ? eggMessage.querySelector('.egg-message-word') : null;
     if (brand && heroPortrait && !prefersReducedMotion) {
+      const eggWords = ['Smart', 'Sweet', 'Stupid', 'Sharp', 'Sincere', 'Surprising', 'Sunny'];
+      const wordDirections = ['right', 'down', 'left', 'up'];
       let taps = 0;
       let lastTap = 0;
-      let dancing = false;
+      let speed = 0;
+      let wordIndex = 0;
+      let directionIndex = 0;
+      let wordTimer = 0;
       let reported = false;
 
-      function setDancing(next) {
-        dancing = next;
-        brand.classList.toggle('brand-dancing', dancing);
-        // Mayuri dances too — queried at toggle time rather than captured,
-        // because her widget is built in a different closure and may have been
-        // dismissed (no dock, nothing to do). The egg is already skipped
-        // entirely under prefers-reduced-motion, and the CSS block guards the
-        // animation besides, so this needs no motion check of its own.
-        const mayuriDock = document.querySelector('.mayuri-dock');
-        /* She sits this one out if she has been abused. The masthead egg still
-           fires — the keylines and the cursor are the wordmark's business, not
-           hers — but she takes no part in it: dancing while refusing to speak
-           to somebody would read as not having minded. The class is withheld
-           rather than only styled away so nothing else keyed to is-dancing can
-           bring her along either. */
-        if (mayuriDock && !mayuriDock.classList.contains('is-sad')) {
-          mayuriDock.classList.toggle('is-dancing', dancing);
-        } else if (mayuriDock) {
-          mayuriDock.classList.remove('is-dancing');
+      function revealWord(word, direction) {
+        eggMessageWord.textContent = word;
+        eggMessageWord.dataset.direction = direction;
+        eggMessageWord.style.animation = 'none';
+        void eggMessageWord.offsetWidth;
+        eggMessageWord.style.animation = '';
+      }
+
+      function showNextWord() {
+        wordIndex = (wordIndex + 1) % eggWords.length;
+        const direction = wordDirections[directionIndex];
+        directionIndex = (directionIndex + 1) % wordDirections.length;
+        revealWord(eggWords[wordIndex], direction);
+      }
+
+      function setSpeed(nextSpeed) {
+        speed = nextSpeed;
+        const dancing = speed > 0;
+        if (dancing) {
+          document.documentElement.dataset.eggSpeed = String(speed);
+        } else {
+          delete document.documentElement.dataset.eggSpeed;
         }
+        brand.classList.toggle('brand-dancing', dancing);
+        heroPortrait.classList.toggle('egg-dancing', dancing);
+
+        if (eggMessage && eggMessageWord) {
+          eggMessage.hidden = !dancing;
+          if (dancing && !wordTimer) {
+            wordIndex = 0;
+            directionIndex = 0;
+            revealWord(eggWords[wordIndex], 'up');
+            wordTimer = window.setInterval(showNextWord, 2200);
+          } else if (!dancing && wordTimer) {
+            window.clearInterval(wordTimer);
+            wordTimer = 0;
+          }
+        }
+
+        const mayuriDock = document.querySelector('.mayuri-dock');
+        if (mayuriDock && (mayuriDock.classList.contains('is-sad') || !dancing)) {
+          mayuriDock.classList.remove('is-dancing');
+        } else if (mayuriDock) {
+          mayuriDock.classList.add('is-dancing');
+        }
+
         if (dancing && !reported) {
           reported = true;
           if (typeof gtag === 'function') gtag('event', 'easter_egg_dance');
@@ -2085,7 +2098,7 @@
         lastTap = now;
         if (taps < 6) return;
         taps = 0;
-        setDancing(!dancing);
+        setSpeed(speed === 0 ? 1 : speed === 4 ? 0 : speed + 1);
       });
     }
 
