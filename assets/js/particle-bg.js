@@ -223,7 +223,7 @@
     // particleLightness only moves on a theme flip, so the result is constant
     // between theme changes — see the `color` cache below.
     function particleColour(hue, alpha) {
-      return `hsla(${hue} 90%, ${particleLightness}, ${alpha}`;
+      return `hsla(${hue}, 90%, ${particleLightness}%, ${alpha})`;
     }
 
     function spawnParticle() {
