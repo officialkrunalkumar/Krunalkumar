@@ -593,7 +593,14 @@
         if (peers[i].name) names.push(peers[i].name);
       }
     } else {
-      names = (peers[0] && peers[0].roster) ? peers[0].roster.slice() : [me()];
+      // For guests: show names if we have roster data, or if we have at least one peer connected
+      if (peers[0] && peers[0].name) {
+        names = [peers[0].name];
+      } else if (peers[0] && peers[0].roster) {
+        names = peers[0].roster.slice();
+      } else {
+        names = [me()];
+      }
     }
     el.roster.textContent = names.length > 1
       ? 'In the room: ' + names.join(', ')
